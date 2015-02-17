@@ -1,6 +1,14 @@
 <?php
+
+
+
 $mysqli = new mysqli('localhost', 'root', 'root', 'MySql_local');
 $table ="contacts";
+$id=mysqli_connect('localhost', 'root', 'root', 'MySql_local');
+
+
+
+
 
 if ($mysqli->connect_error) {
     die('Connect Error (' . $mysqli->connect_errno . ') '
@@ -8,33 +16,9 @@ if ($mysqli->connect_error) {
 }
 
 
-echo 'Success... ' . $mysqli->host_info . "\n<br>";
-$query="SELECT * FROM contacts";
-$link=mysqli_connect('localhost', 'root', 'root', 'MySql_local');
-if ($result = $mysqli->query($query)) {
-    printf("Select returned %d rows.\n", $result->num_rows);
-    
-    
-    if ($result = mysqli_query($link, $query)) {
-
-    /* Récupère un tableau associatif */
-    while ($row = mysqli_fetch_assoc($result)) {
-        printf ("%s (%s)\n", $row["firstame"], $row["email"]);
-    }
-
-    /* Libération des résultats */
-    mysqli_free_result($result);
-}
-    /* free result set */
-   $result->close();
-}
-
-
-/*
-
 $query = "SELECT * FROM contacts";
 
-if ($result = $mysqli->query($query)) {
+/*if ($result = $mysqli->query($query)) {
 
     printf ('<ul>Table contacts contains:</ul>');
     while ($row = $result->fetch_row()) {
@@ -48,10 +32,31 @@ if ($result = $mysqli->query($query)) {
     }
 
     $result->close();
+}*/
+
+
+
+
+if ($result = $mysqli->query(sprintf($query,$id))) {
+    printf("Select returned %d rows.\n", $result->num_rows);
+    
+    while ($row =$result->fetch_assoc()) {
+        printf ('<address><strong><a href="opencontact.php?id='.$row[id].'">%s, %s</a></strong> %s</address>', $row["firstname"], $row["lastname"], $row["email"]);
+    }
+
+    /* Libération des résultats */
+    $result->close();
 }
-*/
+  echo 'Success... ' . $mysqli->host_info . "\n<br>";  
 
 $mysqli->close();
+
+
+/*
+
+
+*/
+
 
 
 ?>
